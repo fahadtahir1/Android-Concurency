@@ -20,10 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        mHandler = object : Handler(Looper.getMainLooper()){
+        mHandler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
+                val messageString = msg.data.getString(MESSAGE_DATA)
 
+                Log.d(TAG, "handleMessage: $messageString")
+                showProgressBar(false)
             }
         }
     }
@@ -41,8 +43,11 @@ class MainActivity : AppCompatActivity() {
         val runnable = Runnable {
 //            showProgressBar(false)
             Thread.sleep(4000)
-            Log.d(TAG, "runCode: ${Thread.currentThread().name}")
-            Log.d(TAG, "runCode: Downloaded")
+//            Log.d(TAG, "runCode: ${Thread.currentThread().name}")
+//            Log.d(TAG, "runCode: Downloaded")
+            val bundle = Bundle().also { it.putString(MESSAGE_DATA, "Download Completed") }
+            val message = Message().also { it.data = bundle }
+            mHandler.sendMessage(message)
         }
 
         val thread = Thread(runnable)
@@ -56,7 +61,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    companion object{
+    companion object {
         private const val TAG = "MainActivity"
+        const val MESSAGE_DATA = "message_data"
     }
 }
