@@ -30,17 +30,19 @@ class MainActivity : AppCompatActivity() {
         showProgressBar(true)
 
         val runnable = Runnable {
-            showProgressBar(false)
+//            showProgressBar(false)
+            Thread.sleep(4000)
+            Log.d(TAG, "runCode: ${Thread.currentThread().name}")
+            Log.d(TAG, "runCode: Downloaded")
         }
 
-        val handlerThread = Handler(Looper.getMainLooper())
-        handlerThread.postDelayed(runnable,4000)
+        val thread = Thread(runnable)
+        thread.name = "Download Thread"
+        thread.start()
 
-
-        binding.tvLogs.append("Running Code \n")
     }
 
-    fun showProgressBar(shouldShow: Boolean) {
+    private fun showProgressBar(shouldShow: Boolean) {
         binding.pbContent.isVisible = shouldShow
     }
 
