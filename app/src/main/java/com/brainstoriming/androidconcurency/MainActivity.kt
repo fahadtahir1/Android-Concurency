@@ -3,6 +3,7 @@ package com.brainstoriming.androidconcurency
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +15,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var mHandler: Handler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        mHandler = object : Handler(Looper.getMainLooper()){
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+
+            }
+        }
     }
 
     fun clearText(view: View) {
