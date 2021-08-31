@@ -15,7 +15,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var mDownloadThread: DownloadThread
+
     private lateinit var mHandler: Handler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -25,9 +28,13 @@ class MainActivity : AppCompatActivity() {
                 val messageString = msg.data.getString(MESSAGE_DATA)
 
                 Log.d(TAG, "handleMessage: $messageString")
-                showProgressBar(false)
+//                showProgressBar(false)
             }
         }
+
+        mDownloadThread = DownloadThread(Playlist.songsList)
+        mDownloadThread.name = "Download Thread"
+        mDownloadThread.start()
     }
 
     fun clearText(view: View) {
@@ -35,25 +42,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun runCode(view: View) {
-        Log.d(TAG, "runCode: ${Thread.currentThread().name}")
         Log.d(TAG, "runCode: Code is Running")
 
-        showProgressBar(true)
-
-        val runnable = Runnable {
-//            showProgressBar(false)
-            Thread.sleep(4000)
-//            Log.d(TAG, "runCode: ${Thread.currentThread().name}")
-//            Log.d(TAG, "runCode: Downloaded")
-            val bundle = Bundle().also { it.putString(MESSAGE_DATA, "Download Completed") }
-            val message = Message().also { it.data = bundle }
-            mHandler.sendMessage(message)
+//        showProgressBar(true)
+        for (item in Playlist.songsList) {
+            val message = Message.obtain()
+            message.obj = item
+            mDownloadThread.mHandler.sendMessage(message)
         }
-
-        val thread = Thread(runnable)
-        thread.name = "Download Thread"
-        thread.start()
-
     }
 
     private fun showProgressBar(shouldShow: Boolean) {
