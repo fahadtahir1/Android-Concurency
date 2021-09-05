@@ -2,14 +2,20 @@ package com.brainstoriming.androidconcurency.service
 
 import android.app.Service
 import android.content.Intent
+import android.os.Message
 import android.util.Log
+import com.brainstoriming.androidconcurency.conncurency.DownloadThread
 
 class MyDownloadService : Service() {
 
     private lateinit var bindedString: String
 
+    private lateinit var mDownloadThread: DownloadThread
+
     override fun onCreate() {
         super.onCreate()
+        mDownloadThread = DownloadThread()
+        mDownloadThread.start()
         Log.d(TAG, "onCreate: Download Service Created")
     }
 
@@ -18,23 +24,27 @@ class MyDownloadService : Service() {
         bindedString = intent?.extras?.getString(KEY).toString()
         Log.d(TAG, "onStartCommand: $bindedString")
 
-        val thread = Thread(Runnable {
-            downloadSong(bindedString)
-        })
+        val message = Message.obtain()
+        message.obj = bindedString
+        mDownloadThread.mHandler.sendMessage(message)
 
-        thread.start()
+//        val thread = Thread(Runnable {
+//            downloadSong(bindedString)
+//        })
+//
+//        thread.start()
 
         return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent): Nothing? = null
 
-    private fun downloadSong(song: String) {
-        Log.d(TAG, "runCode: Starting Download")
-        Thread.sleep(4000)
-        Log.d(TAG, "runCode: ${Thread.currentThread().name}")
-        Log.d(TAG, "runCode: $song Downloaded...")
-    }
+//    private fun downloadSong(song: String) {
+//        Log.d(TAG, "runCode: Starting Download")
+//        Thread.sleep(4000)
+//        Log.d(TAG, "runCode: ${Thread.currentThread().name}")
+//        Log.d(TAG, "runCode: $song Downloaded...")
+//    }
 
     companion object {
         private const val TAG = "MyTags"

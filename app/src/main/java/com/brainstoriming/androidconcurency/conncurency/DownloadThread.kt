@@ -3,7 +3,7 @@ package com.brainstoriming.androidconcurency.conncurency
 import android.os.Looper
 import com.brainstoriming.androidconcurency.MainActivity
 
-class DownloadThread(private val activity: MainActivity) : Thread() {
+class DownloadThread : Thread() {
 
     lateinit var mHandler: DownloadHandler
 
@@ -11,7 +11,7 @@ class DownloadThread(private val activity: MainActivity) : Thread() {
         super.run()
 
         Looper.prepare()
-        mHandler = DownloadHandler(activity)
+        mHandler = DownloadHandler()
         Looper.loop()
 
     }

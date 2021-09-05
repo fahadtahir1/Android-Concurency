@@ -6,7 +6,7 @@ import android.os.Message
 import android.util.Log
 import com.brainstoriming.androidconcurency.MainActivity
 
-class DownloadHandler(private val activity: MainActivity) : Handler(getMainLooper()) {
+class DownloadHandler : Handler(getMainLooper()) {
 
     override fun handleMessage(msg: Message) {
         downloadSong(msg.obj.toString())
@@ -18,11 +18,6 @@ class DownloadHandler(private val activity: MainActivity) : Handler(getMainLoope
         Log.d(TAG, "runCode: ${Thread.currentThread().name}")
         Log.d(TAG, "runCode: $song Downloaded...")
 
-        activity.runOnUiThread {
-            Log.d(TAG, "runCode: ${Thread.currentThread().name}")
-            Log.d(TAG, "runCode: $song Downloaded...")
-            activity.showProgressBar(false)
-        }
     }
 
     companion object {

@@ -2,15 +2,11 @@ package com.brainstoriming.androidconcurency
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.brainstoriming.androidconcurency.conncurency.DownloadThread
 import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MyDownloadService
 import com.brainstoriming.androidconcurency.service.MyDownloadService.Companion.KEY
@@ -52,9 +48,11 @@ class MainActivity : AppCompatActivity() {
     fun runCode(view: View) {
         Log.d(TAG, "runCode: Code is Running")
 
-        Intent(this@MainActivity,MyDownloadService::class.java).apply {
-            putExtra(KEY,"First Song")
-            startService(this)
+        for (item in Playlist.songsList) {
+            Intent(this@MainActivity, MyDownloadService::class.java).apply {
+                putExtra(KEY, item)
+                startService(this)
+            }
         }
 
 //        showProgressBar(true)
