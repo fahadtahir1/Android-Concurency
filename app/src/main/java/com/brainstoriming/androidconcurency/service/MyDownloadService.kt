@@ -24,8 +24,12 @@ class MyDownloadService : Service() {
         bindedString = intent?.extras?.getString(KEY).toString()
         Log.d(TAG, "onStartCommand: $bindedString")
 
+        mDownloadThread.mHandler.setContext(applicationContext)
+        mDownloadThread.mHandler.setDownloadService(this)
+
         val message = Message.obtain()
         message.obj = bindedString
+        message.arg1 = startId
         mDownloadThread.mHandler.sendMessage(message)
 
 //        val thread = Thread(Runnable {
@@ -34,7 +38,7 @@ class MyDownloadService : Service() {
 //
 //        thread.start()
 
-        return START_NOT_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onBind(intent: Intent): Nothing? = null
