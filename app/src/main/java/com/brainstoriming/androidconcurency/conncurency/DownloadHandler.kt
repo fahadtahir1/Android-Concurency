@@ -1,11 +1,10 @@
-package com.brainstoriming.androidconcurency
+package com.brainstoriming.androidconcurency.conncurency
 
 import android.os.Handler
-import android.os.Looper
 import android.os.Looper.getMainLooper
-import android.os.Looper.myLooper
 import android.os.Message
 import android.util.Log
+import com.brainstoriming.androidconcurency.MainActivity
 
 class DownloadHandler(private val activity: MainActivity) : Handler(getMainLooper()) {
 

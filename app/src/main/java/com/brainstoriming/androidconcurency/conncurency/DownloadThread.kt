@@ -1,6 +1,7 @@
-package com.brainstoriming.androidconcurency
+package com.brainstoriming.androidconcurency.conncurency
 
 import android.os.Looper
+import com.brainstoriming.androidconcurency.MainActivity
 
 class DownloadThread(private val activity: MainActivity) : Thread() {
 
