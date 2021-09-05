@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mDownloadThread = DownloadThread(Playlist.songsList)
+        mDownloadThread = DownloadThread(this)
         mDownloadThread.name = "Download Thread"
         mDownloadThread.start()
     }
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     fun runCode(view: View) {
         Log.d(TAG, "runCode: Code is Running")
 
-//        showProgressBar(true)
+        showProgressBar(true)
         for (item in Playlist.songsList) {
             val message = Message.obtain()
             message.obj = item
@@ -52,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showProgressBar(shouldShow: Boolean) {
+    fun showProgressBar(shouldShow: Boolean) {
         binding.pbContent.isVisible = shouldShow
     }
 
 
     companion object {
-        private const val TAG = "MainActivity"
+        private const val TAG = "MyTags"
         const val MESSAGE_DATA = "message_data"
     }
 }
