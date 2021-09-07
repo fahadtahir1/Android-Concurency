@@ -12,6 +12,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brainstoriming.androidconcurency.conncurency.DownloadHandler.Companion.SONG_KEY
 import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MusicPlayerService
+import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MESSAGE_KEY
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MUSIC_COMPLETE
 import com.brainstoriming.androidconcurency.service.MyDownloadService
 import com.brainstoriming.androidconcurency.service.MyDownloadService.Companion.KEY
@@ -43,21 +44,21 @@ class MainActivity : AppCompatActivity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            when {
-
-                intent?.extras?.getString(MUSIC_COMPLETE) != null -> {
-                    binding.btPlay.text = "Play"
-                }
-
-                intent?.extras?.getString(MESSAGE_DATA) != null -> {
-
-                    val songName = intent.extras?.getString(MESSAGE_DATA)
-
-                    Log.d(TAG, "onReceive: $songName")
-                    Log.d(TAG, "onReceive: ${Thread.currentThread().name}")
-                }
-
+            val myString = intent?.extras?.getString(MESSAGE_KEY)
+            if (myString == "done"){
+                binding.btPlay.text = "Play"
             }
+
+
+//                intent?.extras?.getString(MESSAGE_DATA) != null -> {
+//
+//                    val songName = intent.extras?.getString(MESSAGE_DATA)
+//
+//                    Log.d(TAG, "onReceive: $songName")
+//                    Log.d(TAG, "onReceive: ${Thread.currentThread().name}")
+//                }
+
+
 
         }
     }
@@ -151,6 +152,10 @@ class MainActivity : AppCompatActivity() {
                 service?.pause()
                 binding.btPlay.text = "Play"
             } else {
+
+                Intent(this@MainActivity, MusicPlayerService::class.java).also {
+                    startService(it)
+                }
                 service?.play()
                 binding.btPlay.text = "Pause"
             }

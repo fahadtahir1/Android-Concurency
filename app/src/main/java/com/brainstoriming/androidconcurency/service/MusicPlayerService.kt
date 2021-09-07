@@ -17,11 +17,13 @@ class MusicPlayerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        mMediaPlayer = MediaPlayer.create(this, R.raw.maine_royaan)
+        mMediaPlayer = MediaPlayer.create(this, R.raw.my_song)
 
         mMediaPlayer.setOnCompletionListener {
             Intent(MUSIC_COMPLETE).also{
+                it.putExtra(MESSAGE_KEY,"done")
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(it)
+                stopSelf()
             }
         }
         Log.d(TAG, "onCreate: ")
@@ -43,9 +45,14 @@ class MusicPlayerService : Service() {
 
     fun pause() = mMediaPlayer.pause()
 
+    override fun onRebind(intent: Intent?) {
+        super.onRebind(intent)
+        Log.d(TAG, "onRebind: ")
+    }
+
     override fun onUnbind(intent: Intent?): Boolean {
         Log.d(TAG, "onUnbind: ")
-        return super.onUnbind(intent)
+        return true
     }
 
     override fun onDestroy() {
@@ -63,5 +70,6 @@ class MusicPlayerService : Service() {
     companion object{
         private const val TAG = "MyTags"
         const val MUSIC_COMPLETE = "music_complete"
+        const val MESSAGE_KEY = "message_key"
     }
 }
