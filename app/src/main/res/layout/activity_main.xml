@@ -50,9 +50,20 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:onClick="runCode"
-            app:layout_constraintEnd_toStartOf="@+id/bt_clear_text"
+            app:layout_constraintEnd_toStartOf="@+id/bt_play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <Button
+            android:id="@+id/bt_play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:onClick="startMediaPlayer"
+            app:layout_constraintStart_toEndOf="@+id/bt_run_code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bt_clear_text"
             />
 
         <Button
@@ -63,7 +74,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:onClick="clearText"
-            app:layout_constraintStart_toEndOf="@+id/bt_run_code"
+            app:layout_constraintStart_toEndOf="@+id/bt_play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />

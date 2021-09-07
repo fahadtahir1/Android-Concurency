@@ -12,6 +12,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brainstoriming.androidconcurency.conncurency.DownloadHandler.Companion.SONG_KEY
 import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MusicPlayerService
+import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MUSIC_COMPLETE
 import com.brainstoriming.androidconcurency.service.MyDownloadService
 import com.brainstoriming.androidconcurency.service.MyDownloadService.Companion.KEY
 
@@ -42,10 +43,22 @@ class MainActivity : AppCompatActivity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            val songName = intent?.extras?.getString(MESSAGE_DATA)
+            when {
 
-            Log.d(TAG, "onReceive: $songName")
-            Log.d(TAG, "onReceive: ${Thread.currentThread().name}")
+                intent?.extras?.getString(MUSIC_COMPLETE) != null -> {
+                    binding.btPlay.text = "Play"
+                }
+
+                intent?.extras?.getString(MESSAGE_DATA) != null -> {
+
+                    val songName = intent.extras?.getString(MESSAGE_DATA)
+
+                    Log.d(TAG, "onReceive: $songName")
+                    Log.d(TAG, "onReceive: ${Thread.currentThread().name}")
+                }
+
+            }
+
         }
     }
 
@@ -101,7 +114,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(SONG_KEY))
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
+            MUSIC_COMPLETE))
 
         Intent(this@MainActivity, MusicPlayerService::class.java).also {
             bindService(it, serviceConnection, BIND_AUTO_CREATE)
@@ -127,5 +141,21 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MyTags"
         const val MESSAGE_DATA = "message_data"
+    }
+
+    fun startMediaPlayer(v: View) {
+
+        if (isBound) {
+
+            if (service!!.isPlaying()) {
+                service?.pause()
+                binding.btPlay.text = "Play"
+            } else {
+                service?.play()
+                binding.btPlay.text = "Pause"
+            }
+
+        }
+
     }
 }
