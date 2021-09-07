@@ -9,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.brainstoriming.androidconcurency.conncurency.DownloadHandler.Companion.SONG_KEY
 import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MusicPlayerService
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MESSAGE_KEY
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MUSIC_COMPLETE
 import com.brainstoriming.androidconcurency.service.MyDownloadService
-import com.brainstoriming.androidconcurency.service.MyDownloadService.Companion.KEY
+import com.brainstoriming.androidconcurency.service.MyForegroundService
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val myString = intent?.extras?.getString(MESSAGE_KEY)
-            if (myString == "done"){
+            if (myString == "done") {
                 binding.btPlay.text = "Play"
             }
 
@@ -57,7 +56,6 @@ class MainActivity : AppCompatActivity() {
 //                    Log.d(TAG, "onReceive: $songName")
 //                    Log.d(TAG, "onReceive: ${Thread.currentThread().name}")
 //                }
-
 
 
         }
@@ -96,12 +94,16 @@ class MainActivity : AppCompatActivity() {
     fun runCode(view: View) {
         Log.d(TAG, "runCode: Code is Running")
 
-        for (item in Playlist.songsList) {
-            Intent(this@MainActivity, MyDownloadService::class.java).apply {
-                putExtra(KEY, item)
-                startService(this)
-            }
+        Intent(this@MainActivity, MyForegroundService::class.java).apply {
+            startService(this)
         }
+
+//        for (item in Playlist.songsList) {
+//            Intent(this@MainActivity, MyDownloadService::class.java).apply {
+//                putExtra(KEY, item)
+//                startService(this)
+//            }
+//        }
 
 //        showProgressBar(true)
 //        for (item in Playlist.songsList) {
@@ -115,8 +117,11 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(
-            MUSIC_COMPLETE))
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            receiver, IntentFilter(
+                MUSIC_COMPLETE
+            )
+        )
 
         Intent(this@MainActivity, MusicPlayerService::class.java).also {
             bindService(it, serviceConnection, BIND_AUTO_CREATE)
