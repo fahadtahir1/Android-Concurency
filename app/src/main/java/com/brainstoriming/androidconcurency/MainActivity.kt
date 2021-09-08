@@ -13,6 +13,7 @@ import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MusicPlayerService
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MESSAGE_KEY
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MUSIC_COMPLETE
+import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MUSIC_SERVICE_ACTION_START
 import com.brainstoriming.androidconcurency.service.MyDownloadService
 import com.brainstoriming.androidconcurency.service.MyForegroundService
 
@@ -159,6 +160,7 @@ class MainActivity : AppCompatActivity() {
             } else {
 
                 Intent(this@MainActivity, MusicPlayerService::class.java).also {
+                    it.action = MUSIC_SERVICE_ACTION_START
                     startService(it)
                 }
                 service?.play()
