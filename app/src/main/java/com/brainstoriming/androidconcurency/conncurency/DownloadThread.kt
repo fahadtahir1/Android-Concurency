@@ -1,7 +1,6 @@
 package com.brainstoriming.androidconcurency.conncurency
 
 import android.os.Looper
-import com.brainstoriming.androidconcurency.MainActivity
 
 class DownloadThread : Thread() {
 

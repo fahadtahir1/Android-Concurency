@@ -1,4 +1,4 @@
-package com.brainstoriming.androidconcurency
+package com.brainstoriming.androidconcurency.ui
 
 import android.content.*
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.brainstoriming.androidconcurency.R
 import com.brainstoriming.androidconcurency.databinding.ActivityMainBinding
 import com.brainstoriming.androidconcurency.service.MusicPlayerService
 import com.brainstoriming.androidconcurency.service.MusicPlayerService.Companion.MESSAGE_KEY

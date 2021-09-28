@@ -3,13 +3,11 @@ package com.brainstoriming.androidconcurency.conncurency
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import android.os.Looper.getMainLooper
 import android.os.Looper.myLooper
 import android.os.Message
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.brainstoriming.androidconcurency.MainActivity
-import com.brainstoriming.androidconcurency.MainActivity.Companion.MESSAGE_DATA
+import com.brainstoriming.androidconcurency.ui.MainActivity.Companion.MESSAGE_DATA
 import com.brainstoriming.androidconcurency.service.MyDownloadService
 
 class DownloadHandler : Handler(myLooper()!!) {
