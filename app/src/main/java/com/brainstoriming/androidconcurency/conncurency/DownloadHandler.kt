@@ -1,12 +1,11 @@
 package com.brainstoriming.androidconcurency.conncurency
 
 import android.os.Handler
-import android.os.Looper.getMainLooper
+import android.os.Looper.myLooper
 import android.os.Message
 import android.util.Log
-import com.brainstoriming.androidconcurency.MainActivity
 
-class DownloadHandler : Handler(getMainLooper()) {
+class DownloadHandler : Handler(myLooper()!!) {
 
     override fun handleMessage(msg: Message) {
         downloadSong(msg.obj.toString())
